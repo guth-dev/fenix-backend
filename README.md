@@ -55,22 +55,14 @@ A API estará disponível em: `http://localhost:8080`
 
 ## Primeiro acesso
 
-O sistema não possui endpoint de registro de admin. Para criar o primeiro admin, execute no MySQL:
+Na primeira inicialização, o sistema cria automaticamente um admin padrão:
 
-```sql
-INSERT INTO fenix_db.admin (name, email, password_hash, accepted_terms, accepted_terms_at, created_at, updated_at)
-VALUES (
-  'Admin',
-  'admin@fenix.com',
-  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
-  true,
-  NOW(),
-  NOW(),
-  NOW()
-);
-```
+| Campo | Valor |
+|-------|-------|
+| Email | `admin@fenix.com` |
+| Senha | `admin123` |
 
-> A senha acima corresponde a: `admin123`
+> Não é necessário executar SQL manualmente. O admin é criado apenas se não existir nenhum no banco.
 
 ---
 
