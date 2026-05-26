@@ -4,6 +4,7 @@ import com.fenix.backend.domain.entity.Booking;
 import com.fenix.backend.domain.entity.Client;
 import com.fenix.backend.domain.entity.Court;
 import com.fenix.backend.domain.enums.BookingStatus;
+import com.fenix.backend.domain.enums.ClientStatus;
 import com.fenix.backend.domain.enums.CourtStatus;
 import com.fenix.backend.exception.ResourceNotFoundException;
 import com.fenix.backend.repository.BookingRepository;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,12 +47,18 @@ public class BookingService {
 
     @Transactional
     public Booking create(Booking booking) {
-        if (booking.getEndTime().isBefore(booking.getStartTime()) ||
-                booking.getEndTime().isEqual(booking.getStartTime())) {
+        if (!booking.getStartTime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("A reserva deve ser agendada para um horário futuro.");
+        }
+
+        if (!booking.getEndTime().isAfter(booking.getStartTime())) {
             throw new IllegalArgumentException("O horário de término deve ser posterior ao de início.");
         }
 
         Client client = clientService.findById(booking.getClient().getId());
+        if (client.getStatus() != ClientStatus.ACTIVE) {
+            throw new IllegalStateException("Apenas clientes ativos podem realizar reservas.");
+        }
 
         Court court = courtService.findById(booking.getCourt().getId());
         if (court.getStatus() != CourtStatus.ACTIVE) {
