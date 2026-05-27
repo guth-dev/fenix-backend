@@ -66,7 +66,7 @@ public class BookingService {
         }
 
         boolean conflict = bookingRepository.existsConflict(
-                court.getId(), booking.getStartTime(), booking.getEndTime());
+                court.getId(), BookingStatus.CONFIRMED, booking.getStartTime(), booking.getEndTime());
         if (conflict) {
             throw new IllegalStateException("Já existe uma reserva confirmada nesse horário para esta quadra.");
         }
