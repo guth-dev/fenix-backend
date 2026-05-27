@@ -30,7 +30,7 @@ public class DataInitializer implements ApplicationRunner {
                     .acceptedTermsAt(LocalDateTime.now())
                     .build();
             adminRepository.save(admin);
-            log.info("=== Admin padrão criado: email=admin@fenix.com / senha=admin123 ===");
+            log.info("=== Admin padrão criado: email=admin@fenix.com ===");
         }
     }
 }
