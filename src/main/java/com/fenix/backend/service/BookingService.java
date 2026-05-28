@@ -55,6 +55,10 @@ public class BookingService {
             throw new IllegalArgumentException("O horário de término deve ser posterior ao de início.");
         }
 
+        if (!booking.getStartTime().toLocalDate().equals(booking.getEndTime().toLocalDate())) {
+            throw new IllegalArgumentException("A reserva deve ser realizada dentro do mesmo dia.");
+        }
+
         Client client = clientService.findById(booking.getClient().getId());
         if (client.getStatus() != ClientStatus.ACTIVE) {
             throw new IllegalStateException("Apenas clientes ativos podem realizar reservas.");
